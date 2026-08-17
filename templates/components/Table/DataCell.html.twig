@@ -1,0 +1,7 @@
+{# @prop column Column The column which the current cell should render #}
+{# @prop row mixed The data source to render #}
+
+{% set cellValue = this.htmlValue() %}
+<twig:Table:Cell>
+    {{ cellValue }}
+</twig:Table:Cell>

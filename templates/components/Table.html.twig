@@ -1,0 +1,6 @@
+{# @block content The default block #}
+<div class="{{ ('w-full overflow-auto ' ~ attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    <table class="w-full caption-bottom text-sm">
+        {%- block content %}{% endblock -%}
+    </table>
+</div>

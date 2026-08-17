@@ -1,0 +1,6 @@
+<a href="{{ path(route, routeParams|merge(this.getQueryParams())) }}" class="flex items-center gap-1 hover:foreground-primary">
+    {{ label|trans }}
+    {% if this.isActive() %}
+        <span>{{ this.getSortIndicator() }}</span>
+    {% endif %}
+</a>

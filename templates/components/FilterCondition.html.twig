@@ -1,0 +1,56 @@
+{# @var selectedField string #}
+{# @var selectedOperator string #}
+{# @var value string #}
+{# @var fieldRegistry FilterFieldRegistry #}
+
+<div {{ attributes }} class="flex gap-2">
+    {#
+        Plain <select> here, not <twig:Select> - content nested inside a twig component tag
+        renders in that component's own scope, so `this` inside the <option> loop would resolve
+        to the (anonymous) Select component instead of this FilterCondition, breaking
+        this.getFieldChoices()/this.getAvailableOperators() below. Select.html.twig has no
+        prop for passing options directly (only a content block), so a raw element with the
+        same classes is the only way to build the <option> list from this component's own data.
+    #}
+    {# Field Selection #}
+    <div class="flex-1">
+        <select
+            name="{{ this.getFieldInputName('field') }}"
+            data-model="selectedField"
+            class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+        >
+            <option value="">{{ 'label.select_field'|trans }}</option>
+            {% for field in this.getFieldChoices() %}
+                <option value="{{ field.key }}"{{ selectedField == field.key ? ' selected' : '' }}>{{ field.label|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {# Operator Selection - choices depend on the selected field's type, recomputed server-side
+       on every data-model update to selectedField #}
+    <div class="flex-1">
+        <select
+            name="{{ this.getFieldInputName('operator') }}"
+            data-model="selectedOperator"
+            {{ selectedField == '' ? 'disabled' : '' }}
+            class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+        >
+            <option value="">{{ 'label.select_operator'|trans }}</option>
+            {% for operator in this.getAvailableOperators() %}
+                <option value="{{ operator.value }}"{{ selectedOperator == operator.value ? ' selected' : '' }}>{{ operator.label|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {# Value Input - hidden for unary operators (IS_TRUE, IS_FALSE), which need no value #}
+    {% if not this.isUnaryOperator() %}
+    <div class="flex-1">
+        <twig:Input
+            type="text"
+            name="{{ this.getFieldInputName('value') }}"
+            value="{{ value }}"
+            placeholder="{{ 'label.filter_value'|trans }}"
+            data-model="value"
+            :disabled="(selectedField == '' or selectedOperator == '')"
+        />
+    </div>
+    {% endif %}
+</div>

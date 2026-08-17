@@ -1,0 +1,41 @@
+{#
+    Wires FilterConditionType (block prefix "filter_condition", see
+    FilterConditionType::getBlockPrefix()) to render each row via the FilterCondition live
+    component instead of Symfony's default field/operator/value widgets - this is what gives the
+    filter builder its per-field-type operator restriction (a text field only offers
+    contains/starts with/etc., not is_true/is_false).
+
+    Consuming apps register this via config/packages/twig.yaml's `twig: form_themes:`, pointing at
+    this bundle's Twig namespace (auto-registered from the bundle's short name, e.g.
+    "@DataTable/form/filter_theme.html.twig" for RamElectronic\DataTableBundle\DataTableBundle).
+#}
+{% block filter_condition_row %}
+    {# form.vars.id gives this row a stable DOM/live-component id derived from its actual form
+       field id (e.g. "filter_form_filters_0") instead of relying on Live Component's own
+       auto-computed deterministic id. #}
+    <div class="flex items-start gap-2">
+        <div class="flex-1">
+            {{ component('FilterCondition', {
+                id: form.vars.id,
+                fieldName: form.vars.full_name,
+                selectedField: form.field.vars.value ?? '',
+                selectedOperator: form.operator.vars.value ?? '',
+                value: form.value.vars.value ?? '',
+                fieldRegistry: form.vars.field_registry,
+            }) }}
+            {% do form.field.setRendered %}
+            {% do form.operator.setRendered %}
+            {% do form.value.setRendered %}
+        </div>
+        {#
+            LiveCollectionType only wires this "remove" button up automatically via its own
+            live_collection_entry_row block (symfony/ux-live-component's bundled form theme) -
+            since this block (filter_condition_row) matches the entry's block_prefixes first, that
+            block never runs, so the per-row delete button has to be rendered here explicitly,
+            same as live_collection_entry_row itself does.
+        #}
+        {% if button_delete is defined and not button_delete.rendered %}
+            {{ form_row(button_delete) }}
+        {% endif %}
+    </div>
+{% endblock %}

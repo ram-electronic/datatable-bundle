@@ -1,0 +1,35 @@
+{
+    "name": "ram-electronic/datatable-bundle",
+    "type": "symfony-bundle",
+    "description": "Reusable DataTable and Pagination bundle for Symfony applications",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.4",
+        "doctrine/orm": "^3.0",
+        "symfony/form": "^7.0",
+        "symfony/routing": "^7.0",
+        "symfony/security-csrf": "^7.0",
+        "symfony/translation": "^7.0",
+        "symfony/translation-contracts": "^3.0",
+        "symfony/ux-live-component": "^2.0",
+        "symfony/ux-twig-component": "^2.0",
+        "symfony/validator": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RamElectronic\\DataTableBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RamElectronic\\DataTableBundle\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.5"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

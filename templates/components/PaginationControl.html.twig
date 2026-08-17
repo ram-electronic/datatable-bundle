@@ -1,0 +1,47 @@
+{% if pagination.totalPages > 1 %}
+    <div class="px-4 py-3 border-t border-border">
+        <div class="flex items-center justify-between">
+            <div class="text-sm text-muted-foreground">
+                {{ 'pagination.showing'|trans }} {{ (pagination.currentPage - 1) * pagination.pageSize + 1 }}
+                {{ 'pagination.to'|trans }} {{ min(pagination.currentPage * pagination.pageSize, pagination.totalCount) }}
+                {{ 'pagination.of'|trans }} {{ pagination.totalCount }} {{ 'pagination.results'|trans }}
+            </div>
+            <twig:Pagination:Content role="navigation" aria-label="{{ 'pagination.aria.navigation'|trans }}">
+                {% set currentParams = app.request.query.all %}
+                {% if filterFormName and filterFormName in currentParams|keys %}
+                    {% set currentParams = currentParams|merge({(filterFormName): currentParams[filterFormName]|merge({page: pagination.currentPage})}) %}
+                {% endif %}
+
+                {% if pagination.hasPreviousPage %}
+                    {% if filterFormName %}
+                        {% set prevParams = currentParams|merge({(filterFormName): (currentParams[filterFormName] ?? {})|merge({page: pagination.currentPage - 1})}) %}
+                    {% else %}
+                        {% set prevParams = currentParams|merge({page: pagination.currentPage - 1}) %}
+                    {% endif %}
+                    <twig:Pagination:Previous
+                        href="{{ path(route, routeParams|merge(prevParams)) }}"
+                        rel="prev"
+                    />
+                {% endif %}
+
+                <li>
+                    <span class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 w-9 border border-primary bg-primary text-primary-foreground shadow">
+                        {{ pagination.currentPage }}
+                    </span>
+                </li>
+
+                {% if pagination.hasNextPage %}
+                    {% if filterFormName %}
+                        {% set nextParams = currentParams|merge({(filterFormName): (currentParams[filterFormName] ?? {})|merge({page: pagination.currentPage + 1})}) %}
+                    {% else %}
+                        {% set nextParams = currentParams|merge({page: pagination.currentPage + 1}) %}
+                    {% endif %}
+                    <twig:Pagination:Next
+                        href="{{ path(route, routeParams|merge(nextParams)) }}"
+                        rel="next"
+                    />
+                {% endif %}
+            </twig:Pagination:Content>
+        </div>
+    </div>
+{% endif %}

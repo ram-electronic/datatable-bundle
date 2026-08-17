@@ -1,0 +1,33 @@
+<div {{ attributes }}>
+    <twig:Card>
+        <div class="p-4">
+            {{ form_start(form, {action: actionUrl}) }}
+
+            {# Quick Search Box #}
+            <div class="mb-4">
+                {{ form_row(form.search) }}
+            </div>
+
+            {# Dynamic Filter Collection - LiveCollectionType handles add/remove #}
+            <div class="space-y-4">
+                {{ form_row(form.filters) }}
+            </div>
+            <div class="flex gap-2 mt-6">
+                <twig:Button type="submit">
+                    {{ 'action.apply_filters'|trans }}
+                </twig:Button>
+                <twig:Button as="a" href="{{ actionUrl }}" variant="outline">
+                    {{ 'action.clear_filters'|trans }}
+                </twig:Button>
+            </div>
+
+            {{ form_widget(form.page) }}
+            {{ form_widget(form.sort) }}
+            {{ form_widget(form.direction) }}
+            {% do form.page.setRendered %}
+            {% do form.sort.setRendered %}
+            {% do form.direction.setRendered %}
+            {{ form_end(form) }}
+        </div>
+    </twig:Card>
+</div>

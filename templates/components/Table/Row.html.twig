@@ -1,0 +1,8 @@
+{# @prop hover bool Whether to show hover effect #}
+{# @block content The default block #}
+<tr
+    class="{{ ('border-b transition-colors ' ~ (hover ? 'hover:bg-muted/50 ' : '') ~ attributes.render('class'))|tailwind_merge }}"
+    {{ attributes }}
+>
+    {%- block content %}{% endblock -%}
+</tr>

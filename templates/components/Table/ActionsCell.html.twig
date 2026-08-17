@@ -1,0 +1,7 @@
+{# @prop actions array<Action> The actions to render for this row #}
+{# @prop row mixed The data source for the row #}
+
+{% set cellValue = this.htmlValue() %}
+<twig:Table:Cell align="right">
+    {{ cellValue }}
+</twig:Table:Cell>
