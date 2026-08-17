@@ -20,16 +20,39 @@ readonly class DateCellRenderer implements CellRendererInterface
     {
         $value = $this->valueReader->read($row, $column->key);
 
-        if ($value instanceof \DateTimeInterface) {
-            return $value->format('d.m.Y');
+        $date = $this->toDateTime($value);
+        if (! $date instanceof \DateTimeInterface) {
+            return '-';
         }
 
-        return '-';
+        return $date->format('d.m.Y');
     }
 
     #[\Override]
     public function supports(Column $column): bool
     {
         return DataType::DATE === $column->type;
+    }
+
+    /**
+     * Accept string-backed date values too, since ValueReader supports
+     * array/DTO-style rows (a first-class case) where a date field may be a
+     * plain string rather than a \DateTimeInterface instance.
+     */
+    private function toDateTime(mixed $value): ?\DateTimeInterface
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return $value;
+        }
+
+        if (\is_string($value) && '' !== trim($value)) {
+            try {
+                return new \DateTimeImmutable($value);
+            } catch (\Exception) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

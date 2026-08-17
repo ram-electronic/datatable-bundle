@@ -6,18 +6,20 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\DataTable\Renderer;
 
 use RamElectronic\DataTableBundle\Application\ReadModel\Column;
 use RamElectronic\DataTableBundle\Application\ReadModel\DataType;
-use RamElectronic\DataTableBundle\Presentation\Service\PercentageFormatter;
 use RamElectronic\DataTableBundle\Presentation\Twig\DataTable\Util\ValueReaderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Cell renderer for percentage values.
- * Formats decimal values (0.19 -> 19,00%) with German number formatting.
+ * Cell renderer for boolean values.
+ * Without this renderer, BOOLEAN columns fall through to DefaultRenderer,
+ * which prints `false` as an empty string - indistinguishable from a
+ * missing/null cell.
  */
-readonly class PercentageCellRenderer implements CellRendererInterface
+readonly class BooleanCellRenderer implements CellRendererInterface
 {
     public function __construct(
         private ValueReaderInterface $valueReader,
-        private PercentageFormatter $percentageFormatter,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -26,17 +28,16 @@ readonly class PercentageCellRenderer implements CellRendererInterface
     {
         $value = $this->valueReader->read($row, $column->key);
 
-        // Ensure value is int, float or string for the formatter (int widens to float)
-        if (! \is_int($value) && ! \is_float($value) && ! \is_string($value)) {
-            return $this->percentageFormatter->format(0);
+        if (null === $value) {
+            return '';
         }
 
-        return $this->percentageFormatter->format($value);
+        return $this->translator->trans($value ? 'boolean.true' : 'boolean.false');
     }
 
     #[\Override]
     public function supports(Column $column): bool
     {
-        return DataType::PERCENTAGE === $column->type;
+        return DataType::BOOLEAN === $column->type;
     }
 }
