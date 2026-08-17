@@ -63,11 +63,20 @@ class FilterForm extends AbstractController
     /**
      * Custom hydration for field registry to handle serialization.
      *
-     * @param class-string<FilterFieldRegistry> $className
+     * Uses PHP's native serialization so the registry's full state (its
+     * $fields array) round-trips regardless of the concrete subclass's
+     * constructor signature - unserialize() reconstructs the object without
+     * invoking the constructor.
      */
-    public function hydrateFieldRegistry(string $className): FilterFieldRegistry
+    public function hydrateFieldRegistry(string $data): FilterFieldRegistry
     {
-        return new $className();
+        $registry = unserialize($data, ['allowed_classes' => true]);
+
+        if (! $registry instanceof FilterFieldRegistry) {
+            throw new \UnexpectedValueException('Failed to unserialize a FilterFieldRegistry instance.');
+        }
+
+        return $registry;
     }
 
     /**
@@ -75,6 +84,6 @@ class FilterForm extends AbstractController
      */
     public function dehydrateFieldRegistry(FilterFieldRegistry $registry): string
     {
-        return $registry::class;
+        return serialize($registry);
     }
 }

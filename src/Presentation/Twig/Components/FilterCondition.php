@@ -39,13 +39,20 @@ final class FilterCondition
     /**
      * Custom hydration for field registry to handle serialization.
      *
-     * @param class-string<FilterFieldRegistry> $className
+     * Uses PHP's native serialization so the registry's full state (its
+     * $fields array) round-trips regardless of the concrete subclass's
+     * constructor signature - unserialize() reconstructs the object without
+     * invoking the constructor.
      */
-    public function hydrateFieldRegistry(string $className): FilterFieldRegistry
+    public function hydrateFieldRegistry(string $data): FilterFieldRegistry
     {
-        // Re-instantiate the registry class
-        /* @var FilterFieldRegistry */
-        return new $className();
+        $registry = unserialize($data, ['allowed_classes' => true]);
+
+        if (! $registry instanceof FilterFieldRegistry) {
+            throw new \UnexpectedValueException('Failed to unserialize a FilterFieldRegistry instance.');
+        }
+
+        return $registry;
     }
 
     /**
@@ -53,8 +60,7 @@ final class FilterCondition
      */
     public function dehydrateFieldRegistry(FilterFieldRegistry $registry): string
     {
-        // Store only the class name, registry will be reconstructed on hydration
-        return $registry::class;
+        return serialize($registry);
     }
 
     /**
