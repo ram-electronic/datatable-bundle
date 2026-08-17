@@ -21,35 +21,43 @@ class DateTimeCellRendererTest extends TestCase
         return new DateTimeCellRenderer($valueReader);
     }
 
-    private function column(): Column
+    private function updatedAtColumn(): Column
     {
         return new Column('updatedAt', DataType::DATETIME, new TranslatableMessage('label.updated_at'));
     }
 
+    public function testSupportsOnlyDateTimeColumns(): void
+    {
+        $renderer = $this->createRenderer(new \DateTimeImmutable('2024-01-01 10:00:00'));
+
+        $this->assertTrue($renderer->supports($this->updatedAtColumn()));
+        $this->assertFalse($renderer->supports(new Column('name', DataType::STRING, new TranslatableMessage('label.name'))));
+    }
+
     public function testRendersDateTimeInterfaceValue(): void
     {
-        $rendered = $this->createRenderer(new \DateTimeImmutable('2024-03-05 14:30:00'))->render($this->column(), row: []);
+        $rendered = $this->createRenderer(new \DateTimeImmutable('2024-03-15 14:30:00'))->render($this->updatedAtColumn(), row: []);
 
-        $this->assertSame('05.03.2024 14:30', $rendered);
+        $this->assertSame('15.03.2024 14:30', $rendered);
     }
 
     public function testRendersStringBackedDateTimeValue(): void
     {
-        $rendered = $this->createRenderer('2024-03-05 14:30:00')->render($this->column(), row: []);
+        $rendered = $this->createRenderer('2024-01-01 09:15:00')->render($this->updatedAtColumn(), row: []);
 
-        $this->assertSame('05.03.2024 14:30', $rendered);
+        $this->assertSame('01.01.2024 09:15', $rendered);
     }
 
-    public function testRendersDashForUnparsableStringValue(): void
+    public function testRendersDashForUnparsableString(): void
     {
-        $rendered = $this->createRenderer('not a datetime')->render($this->column(), row: []);
+        $rendered = $this->createRenderer('not-a-datetime')->render($this->updatedAtColumn(), row: []);
 
         $this->assertSame('-', $rendered);
     }
 
     public function testRendersDashForNullValue(): void
     {
-        $rendered = $this->createRenderer(null)->render($this->column(), row: []);
+        $rendered = $this->createRenderer(null)->render($this->updatedAtColumn(), row: []);
 
         $this->assertSame('-', $rendered);
     }
