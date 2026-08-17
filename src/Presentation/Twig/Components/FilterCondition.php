@@ -39,20 +39,27 @@ final class FilterCondition
     /**
      * Custom hydration for field registry to handle serialization.
      *
-     * Uses PHP's native serialization so the registry's full state (its
-     * $fields array) round-trips regardless of the concrete subclass's
-     * constructor signature - unserialize() reconstructs the object without
-     * invoking the constructor.
+     * PHP disallows serialize() on anonymous classes outright, so the whole
+     * registry can't be serialized directly. Instead, persist the concrete
+     * class name alongside its $fields array and reconstruct via the
+     * constructor, which preserves state without depending on serialize()
+     * support for the subclass.
      */
     public function hydrateFieldRegistry(string $data): FilterFieldRegistry
     {
-        $registry = unserialize($data, ['allowed_classes' => true]);
+        $payload = unserialize($data, ['allowed_classes' => true]);
 
-        if (! $registry instanceof FilterFieldRegistry) {
+        if (
+            ! \is_array($payload)
+            || ! isset($payload['class'], $payload['fields'])
+            || ! \is_string($payload['class'])
+            || ! \is_array($payload['fields'])
+            || ! is_a($payload['class'], FilterFieldRegistry::class, true)
+        ) {
             throw new \UnexpectedValueException('Failed to unserialize a FilterFieldRegistry instance.');
         }
 
-        return $registry;
+        return new $payload['class']($payload['fields']);
     }
 
     /**
@@ -60,7 +67,10 @@ final class FilterCondition
      */
     public function dehydrateFieldRegistry(FilterFieldRegistry $registry): string
     {
-        return serialize($registry);
+        return serialize([
+            'class' => $registry::class,
+            'fields' => $registry->getFields(),
+        ]);
     }
 
     /**
