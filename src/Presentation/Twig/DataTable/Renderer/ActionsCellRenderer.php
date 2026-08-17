@@ -74,7 +74,11 @@ readonly class ActionsCellRenderer
         $idStr = match (true) {
             \is_int($id) => (string) $id,
             \is_string($id) => $id,
-            default => '',
+            $id instanceof \Stringable => (string) $id,
+            default => throw new \InvalidArgumentException(\sprintf(
+                'Unsupported row id type for delete action: %s',
+                get_debug_type($id)
+            )),
         };
         $tokenValue = $this->csrfTokenManager->getToken('delete'.$idStr)->getValue();
         $translatedLabel = $this->translator->trans($label ?? 'action.delete');
