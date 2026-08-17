@@ -32,5 +32,9 @@ final readonly class FilterCondition
         if (null === $this->value || '' === $this->value) {
             throw new \InvalidArgumentException('Filter value cannot be empty');
         }
+
+        if (! \is_scalar($this->value) && ! $this->value instanceof \DateTimeInterface) {
+            throw new \InvalidArgumentException('Filter value must be scalar or a DateTimeInterface instance');
+        }
     }
 }

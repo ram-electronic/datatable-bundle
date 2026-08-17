@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use RamElectronic\DataTableBundle\Application\ReadModel\Column;
 use RamElectronic\DataTableBundle\Application\ReadModel\DataType;
 use RamElectronic\DataTableBundle\Application\ReadModel\FilterCollection;
 use RamElectronic\DataTableBundle\Application\ReadModel\FilterFieldRegistry;
@@ -39,6 +40,14 @@ abstract class DoctrineTableReadModelRepository extends ServiceEntityRepository
         parent::__construct($managerRegistry, $entityClass);
         // Cache valid field keys to avoid repeated method calls in filtering loop
         $this->validFieldKeys = $this->fieldRegistry->getKeys();
+
+        $missingMappings = array_diff($this->validFieldKeys, array_keys($fieldMapping));
+        if ([] !== $missingMappings) {
+            throw new \LogicException(\sprintf(
+                'Field(s) "%s" are registered in the field registry but have no entry in $fieldMapping.',
+                implode('", "', $missingMappings)
+            ));
+        }
     }
 
     /**
@@ -74,6 +83,14 @@ abstract class DoctrineTableReadModelRepository extends ServiceEntityRepository
             // Validate field is whitelisted
             if (! \in_array($condition->field, $this->validFieldKeys, true)) {
                 continue; // Skip invalid fields
+            }
+
+            // Validate operator is applicable to this field's data type (a request built
+            // outside the JS-driven operator dropdown could pair an incompatible operator
+            // with the field, e.g. CONTAINS on a BOOLEAN column)
+            $fieldDefinition = $this->fieldRegistry->getField($condition->field);
+            if (! $fieldDefinition instanceof Column || ! \in_array($condition->operator, $fieldDefinition->getAvailableOperators(), true)) {
+                continue; // Skip invalid operator/field combinations
             }
 
             $column = $this->fieldMapping[$condition->field];
@@ -227,7 +244,14 @@ abstract class DoctrineTableReadModelRepository extends ServiceEntityRepository
         array $sortKeyMapping,
         string $defaultSortKey,
     ): void {
-        $sortColumn = $sortKeyMapping[$criteria->sort->key] ?? $sortKeyMapping[$defaultSortKey];
+        $sortColumn = $sortKeyMapping[$criteria->sort->key] ?? $sortKeyMapping[$defaultSortKey] ?? null;
+
+        if (null === $sortColumn) {
+            throw new \InvalidArgumentException(\sprintf(
+                'Default sort key "%s" is not present in the sort key mapping.',
+                $defaultSortKey
+            ));
+        }
 
         $qb->orderBy($sortColumn, $criteria->sort->direction->value);
     }
