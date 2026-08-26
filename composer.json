@@ -2,7 +2,7 @@
     "name": "ram-electronic/datatable-bundle",
     "type": "symfony-bundle",
     "description": "Reusable DataTable and Pagination bundle for Symfony applications",
-    "version": "1.0.0",
+    "version": "0.0.2",
     "license": "MIT",
     "require": {
         "php": ">=8.4",
