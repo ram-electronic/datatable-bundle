@@ -1,0 +1,10 @@
+<twig:DataTable:Button:Link
+    aria-label="{{ 'pagination.aria.previous'|trans({}, 'datatable') }}"
+    variant="ghost"
+    size="default"
+    class="{{ ('gap-1 pl-2.5 ' ~ attributes.render('class'))|tailwind_merge }}"
+    {{ ...attributes.without('class') }}
+>
+    <twig:ux:icon name="lucide:chevron-left" class="size-4" />
+    <span>{{ 'pagination.previous'|trans({}, 'datatable') }}</span>
+</twig:DataTable:Button:Link>
