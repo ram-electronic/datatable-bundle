@@ -13,9 +13,14 @@
         "symfony/security-csrf": "^7.0",
         "symfony/translation": "^7.0",
         "symfony/translation-contracts": "^3.0",
+        "symfony/twig-bundle": "^7.0",
+        "symfony/ux-icons": "^2.32",
         "symfony/ux-live-component": "^2.0",
         "symfony/ux-twig-component": "^2.0",
         "symfony/validator": "^7.0",
+        "tales-from-a-dev/twig-tailwind-extra": "^1.0",
+        "twig/extra-bundle": "^3.12",
+        "twig/html-extra": "^3.12",
         "twig/twig": "^3.0"
     },
     "autoload": {

@@ -1,0 +1,4 @@
+{# @block content The default block #}
+<div class="{{ ('flex gap-2 flex-row-reverse overflow-x-auto ' ~ attributes.render('class'))|tailwind_merge }}">
+    {%- block content %}{% endblock -%}
+</div>

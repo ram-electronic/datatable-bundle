@@ -1,5 +1,7 @@
 /vendor/
 /.php-cs-fixer.cache
 /.phpunit.cache/
+/.phpunit.result.cache
+/config/reference.php
 composer.lock
 .envrc
