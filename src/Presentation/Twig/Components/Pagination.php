@@ -6,7 +6,7 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent]
+#[AsTwigComponent('DataTable:Pagination', template: '@DataTable/components/Pagination.html.twig')]
 final class Pagination
 {
 }
