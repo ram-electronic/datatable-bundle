@@ -11,6 +11,7 @@ Symfony UX Live Components.
   `translation`, `validator`)
 - Symfony UX `live-component` and `twig-component` 2.0+
 - Doctrine `orm` 3.0+ and `doctrine-bundle` 2.11+
+- Twig 3.0+
 
 ## Installation
 
@@ -30,19 +31,35 @@ return [
 
 ## Twig components
 
-The bundle registers its Twig components under the `RamElectronic\DataTableBundle\Presentation\Twig\Components`
-namespace, with one exception: `Table`, `Pagination`, and the `Table\Body`,
-`Table\Cell`, `Table\Head`, `Table\Header`, and `Table\Row` components are
-**not** auto-registered (see `config/services.php`). Those names collide with
-anonymous Twig components most consuming apps already define for their own
-markup, so you're expected to supply your own `Table`/`Row`/`Cell`/etc. and
-compose them with the parts the bundle *does* register:
+The bundle auto-registers every component under the
+`RamElectronic\DataTableBundle\Presentation\Twig\Components` namespace:
 
 - `FilterForm` / `FilterCondition` — Live Components backing the filter UI
 - `PaginationControl` — pagination controls
-- `Table:ActionsCell`, `Table:DataCell`, `Table:HeadRow`, `Table:SortableHeader`
+- `DataTable:Table` / `DataTable:Pagination` — generic table/nav wrappers.
+  Named with an explicit `DataTable:` prefix (rather than the bare `Table`/
+  `Pagination` a plain `#[AsTwigComponent]` would produce) so they can never
+  collide with a top-level `<twig:Table>` or `<twig:Pagination>` component a
+  consuming app defines for its own, unrelated markup.
+- `Table:Body`, `Table:Cell`, `Table:Head`, `Table:Header`, `Table:Row`,
+  `Table:ActionsCell`, `Table:DataCell`, `Table:HeadRow`, `Table:SortableHeader`
+  — already namespaced under `Table:`, so no separate prefixing is needed.
 
 See `templates/components/` for the reference markup these components render.
+
+### Components you must provide
+
+The bundle's own templates assume the consuming app supplies a small
+shadcn/ui-style component set, under these exact names, in its own Twig
+component namespace:
+
+- `Card`
+- `ButtonRow`, `Button:Button`, `Button:Link`
+- `Form:Input`
+- `Pagination:Content`, `Pagination:Previous`, `Pagination:Next`
+
+Without these, `FilterForm`, `FilterCondition`, and `PaginationControl` will
+fail to render with an "Unknown component" error.
 
 ## Usage
 
@@ -54,8 +71,8 @@ See `templates/components/` for the reference markup these components render.
 3. In your controller, build a `TableCriteria` from request/form data via
    `Presentation\Service\TableCriteriaBuilder` (which composes
    `FilterCollectionBuilder`), and pass it to your repository.
-4. Render results with `PaginationControl` and the bundle's `Table:*`
-   components inside your own table markup.
+4. Render results with `PaginationControl` and the bundle's `DataTable:Table`/
+   `Table:*` components inside your own table markup.
 
 ## Testing
 
