@@ -6,6 +6,7 @@
 >
     <php>
         <env name="KERNEL_CLASS" value="RamElectronic\DataTableBundle\Tests\Integration\Kernel"/>
+        <env name="APP_DEBUG" value="0"/>
     </php>
 
     <testsuites>

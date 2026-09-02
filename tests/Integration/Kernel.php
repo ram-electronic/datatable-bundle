@@ -60,6 +60,10 @@ final class Kernel extends BaseKernel
 
             $container->loadFromExtension('twig', [
                 'default_path' => '%kernel.project_dir%/tests/Integration/templates',
+                // Explicit regardless of kernel.debug (disabled below to avoid
+                // FrameworkBundle's debug-only config-reference dump), so these
+                // tests still catch undefined-variable rendering bugs.
+                'strict_variables' => true,
             ]);
 
             $container->loadFromExtension('twig_component', [
