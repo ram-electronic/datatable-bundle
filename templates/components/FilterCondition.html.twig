@@ -43,7 +43,7 @@
     {# Value Input - hidden for unary operators (IS_TRUE, IS_FALSE), which need no value #}
     {% if not this.isUnaryOperator() %}
     <div class="flex-1">
-        <twig:DataTable:Form:Input
+        <twig:Form:Input
             type="text"
             name="{{ this.getFieldInputName('value') }}"
             value="{{ value }}"
