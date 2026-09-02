@@ -12,14 +12,14 @@
             <div class="space-y-4">
                 {{ form_row(form.filters) }}
             </div>
-            <div class="flex gap-2 mt-6">
-                <twig:Button type="submit">
+            <twig:ButtonRow class="mt-6">
+                <twig:Button:Button type="submit" variant="primary">
                     {{ 'action.apply_filters'|trans }}
-                </twig:Button>
-                <twig:Button as="a" href="{{ actionUrl }}" variant="outline">
+                </twig:Button:Button>
+                <twig:Button:Link href="{{ actionUrl }}" variant="outline">
                     {{ 'action.clear_filters'|trans }}
-                </twig:Button>
-            </div>
+                </twig:Button:Link>
+            </twig:ButtonRow>
 
             {{ form_widget(form.page) }}
             {{ form_widget(form.sort) }}
