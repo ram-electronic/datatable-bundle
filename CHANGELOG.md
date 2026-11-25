@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow Symfony 8 (`^7.0 || ^8.0`) and Symfony UX 3 (`ux-live-component` and
   `ux-twig-component` `^2.0 || ^3.0`, `ux-icons` `^2.32 || ^3.0`). CI now runs
   PHPUnit on Symfony 7.4 + UX 2 (PHP 8.4) and Symfony 8 + UX 3 (PHP 8.5).
+- Drop the hardcoded `version` from `composer.json`. Composer and Packagist
+  take the version from the git tag; a mismatching `version` field makes
+  Packagist skip the tag.
 
 ### Added
 
