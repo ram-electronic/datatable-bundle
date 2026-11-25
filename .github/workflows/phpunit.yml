@@ -10,9 +10,18 @@ jobs:
   phpunit:
     runs-on: ubuntu-latest
 
+    name: phpunit (PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony }}, UX ${{ matrix.ux }})
+
     strategy:
+      fail-fast: false
       matrix:
-        php-version: [ '8.4' ]
+        include:
+          - php-version: '8.4'
+            symfony: '7.4.*'
+            ux: '^2.0'
+          - php-version: '8.5'
+            symfony: '8.*'
+            ux: '^3.0'
 
     steps:
       - name: Checkout code
@@ -32,12 +41,21 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony }}-${{ hashFiles('composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-composer-
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony }}-
 
+      # composer.lock is not committed, so resolve per matrix entry. Pin the
+      # Symfony and UX majors with --with; -W lets everything else follow.
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: >-
+          composer update --prefer-dist --no-progress --no-interaction -W
+          --with "symfony/framework-bundle:${{ matrix.symfony }}"
+          --with "symfony/form:${{ matrix.symfony }}"
+          --with "symfony/validator:${{ matrix.symfony }}"
+          --with "symfony/ux-live-component:${{ matrix.ux }}"
+          --with "symfony/ux-twig-component:${{ matrix.ux }}"
+          --with "symfony/ux-icons:${{ matrix.ux }}"
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
