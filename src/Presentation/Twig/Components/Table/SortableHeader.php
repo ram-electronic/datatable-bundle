@@ -14,7 +14,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
  * Creates a clickable header that preserves filter state while toggling sort direction.
  * Supports Symfony form field naming conventions.
  */
-#[AsTwigComponent('Table:SortableHeader')]
+#[AsTwigComponent('DataTable:Table:SortableHeader', template: '@DataTable/components/Table/SortableHeader.html.twig')]
 final class SortableHeader
 {
     public string $sortKey;

@@ -6,7 +6,7 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\Components\Table;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('Table:Cell')]
+#[AsTwigComponent('DataTable:Table:Cell', template: '@DataTable/components/Table/Cell.html.twig')]
 final class Cell
 {
     public string $align = 'left';
