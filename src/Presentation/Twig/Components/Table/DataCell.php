@@ -9,7 +9,7 @@ use RamElectronic\DataTableBundle\Presentation\Twig\DataTable\TableCellRenderer;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Twig\Markup;
 
-#[AsTwigComponent('Table:DataCell')]
+#[AsTwigComponent('DataTable:Table:DataCell', template: '@DataTable/components/Table/DataCell.html.twig')]
 final class DataCell
 {
     public mixed $row;

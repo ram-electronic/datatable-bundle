@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The `Table:*` sub-components (`Body`, `Cell`, `Head`, `Header`, `Row`,
+  `ActionsCell`, `DataCell`, `HeadRow`, `SortableHeader`) are now
+  `DataTable:Table:*` with explicit `@DataTable` templates. 1.0.0 started
+  registering them unprefixed, which replaced a consuming app's own
+  `Table:Head`, `Table:Row` etc. (e.g. from the Symfony UX Toolkit). Apps that
+  referenced the bundle's `Table:*` names directly must add the `DataTable:`
+  prefix.
+
 ### Changed
 
 - Allow Symfony 8 (`^7.0 || ^8.0`) and Symfony UX 3 (`ux-live-component` and

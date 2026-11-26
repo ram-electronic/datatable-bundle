@@ -55,9 +55,13 @@ is nothing else to install or implement, `FilterForm`, `FilterCondition`, and
   the bare `Table`/`Card`/`Button:Button`/etc. a plain `#[AsTwigComponent]`
   would produce) so they can never collide with a same-named top-level
   component a consuming app defines for its own, unrelated markup.
-- `Table:Body`, `Table:Cell`, `Table:Head`, `Table:Header`, `Table:Row`,
-  `Table:ActionsCell`, `Table:DataCell`, `Table:HeadRow`, `Table:SortableHeader`
-  — already namespaced under `Table:`, so no separate prefixing is needed.
+- `DataTable:Table:Body`, `DataTable:Table:Cell`, `DataTable:Table:Head`,
+  `DataTable:Table:Header`, `DataTable:Table:Row`, `DataTable:Table:ActionsCell`,
+  `DataTable:Table:DataCell`, `DataTable:Table:HeadRow`,
+  `DataTable:Table:SortableHeader`. A bare `Table:` namespace is not enough:
+  apps commonly have their own `Table:Head`, `Table:Row` etc. (for example
+  from the Symfony UX Toolkit), and a bundle component with the same name
+  replaces the app's.
 
 See `templates/components/` for the reference markup these components render.
 

@@ -9,7 +9,7 @@ use RamElectronic\DataTableBundle\Presentation\Twig\DataTable\Renderer\ActionsCe
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Twig\Markup;
 
-#[AsTwigComponent('Table:ActionsCell')]
+#[AsTwigComponent('DataTable:Table:ActionsCell', template: '@DataTable/components/Table/ActionsCell.html.twig')]
 final class ActionsCell
 {
     /** @var array<Action> */

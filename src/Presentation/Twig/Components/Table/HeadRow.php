@@ -6,7 +6,7 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\Components\Table;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('Table:HeadRow')]
+#[AsTwigComponent('DataTable:Table:HeadRow', template: '@DataTable/components/Table/HeadRow.html.twig')]
 final class HeadRow
 {
 }
