@@ -104,11 +104,45 @@ bundle's templates, e.g. in `assets/styles/app.css`:
 2. Extend `Infrastructure\Repository\DoctrineTableReadModelRepository` for your
    read-model entity's repository — it provides filtering, sorting, and
    pagination against a Doctrine `QueryBuilder` given a field-to-column mapping.
-3. In your controller, build a `TableCriteria` from request/form data via
-   `Presentation\Service\TableCriteriaBuilder` (which composes
-   `FilterCollectionBuilder`), and pass it to your repository.
-4. Render results with `PaginationControl` and the bundle's `DataTable:Table`/
-   `Table:*` components inside your own table markup.
+   Give it a method that takes a `TableCriteria` and returns a
+   `PaginatedResult` (apply filters, search, count, sorting, pagination).
+3. In your controller, let `Presentation\Service\TableHandler` handle the
+   request. It submits the filter form from the query string (an invalid one
+   falls back to the defaults), builds the `TableCriteria`, calls your finder
+   and returns one `Presentation\View\Table`:
+
+   ```php
+   public function index(Request $request, TableHandler $tableHandler, CustomerFilterFields $filterFields, CustomerRepository $repository): Response
+   {
+       return $this->render('customer/index.html.twig', [
+           'table' => $tableHandler->handle($request, $filterFields, new Sort('name', SortDirection::ASC), $repository->findForTable(...)),
+       ]);
+   }
+   ```
+
+4. Pass the table to the components; your own table markup renders the rows:
+
+   ```twig
+   <twig:FilterForm :table="table" />
+
+   <table>
+       <tr>
+           <th><twig:DataTable:Table:SortableHeader :table="table" sortKey="name" label="label.name" /></th>
+       </tr>
+       {% for customer in table.items %}
+           <tr><td>{{ customer.name }}</td></tr>
+       {% endfor %}
+   </table>
+
+   <twig:PaginationControl :table="table" />
+   ```
+
+   `table` fills the components' other props (`initialFormData`,
+   `fieldRegistry`, `actionUrl`, `currentSort`, `route`, `routeParams`,
+   `form`, `pagination`, `filterFormName`); props you pass explicitly win.
+   Without `TableHandler`, build a `TableCriteria` with
+   `Presentation\Service\TableCriteriaBuilder` and pass those props
+   yourself, as before.
 
 ## Testing
 

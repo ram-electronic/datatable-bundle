@@ -15,5 +15,6 @@ return static function (ContainerConfigurator $container): void {
             __DIR__.'/../src/DataTableBundle.php',
             __DIR__.'/../src/DependencyInjection/',
             __DIR__.'/../src/Application/',
+            __DIR__.'/../src/Presentation/View/',
         ]);
 };

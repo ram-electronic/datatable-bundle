@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `TableHandler::handle($request, $fieldRegistry, $defaultSort, $finder)`
+  turns a list request into one `Presentation\View\Table` (current page,
+  criteria, filter form view and data, field registry, route): it submits the
+  filter form from the query string, falls back to the defaults for an
+  invalid one, builds the `TableCriteria` and calls the finder.
+- `FilterForm`, `DataTable:Table:SortableHeader` and `PaginationControl`
+  accept `table`, which fills their other props; explicitly passed props still
+  win. A page passes one variable instead of five.
+
+## [1.2.0] - 2026-11-27
+
 Found while adding the bundle to a fresh Symfony 8.1 / UX 3 app: it needed
 four workarounds there, which are no longer necessary.
 
