@@ -117,6 +117,18 @@
         <source>pagination.aria.navigation</source>
         <target>Seitennavigation</target>
       </trans-unit>
+      <trans-unit id="table.empty" resname="table.empty">
+        <source>table.empty</source>
+        <target>Keine Einträge gefunden.</target>
+      </trans-unit>
+      <trans-unit id="boolean.true" resname="boolean.true">
+        <source>boolean.true</source>
+        <target>Ja</target>
+      </trans-unit>
+      <trans-unit id="boolean.false" resname="boolean.false">
+        <source>boolean.false</source>
+        <target>Nein</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

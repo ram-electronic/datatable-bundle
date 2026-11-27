@@ -8,6 +8,7 @@ use RamElectronic\DataTableBundle\Application\ReadModel\Sort;
 use RamElectronic\DataTableBundle\Application\ReadModel\SortDirection;
 use RamElectronic\DataTableBundle\Presentation\View\Table;
 use Symfony\Component\Form\FormView;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class SortableHeader
 {
     public string $sortKey;
-    public string $label;
+    public string|TranslatableInterface $label;
     public Sort $currentSort;
     public string $route;
     public FormView $form;

@@ -8,6 +8,7 @@ use RamElectronic\DataTableBundle\Application\ReadModel\FilterFieldRegistry;
 use RamElectronic\DataTableBundle\Application\ReadModel\PaginatedResult;
 use RamElectronic\DataTableBundle\Application\ReadModel\Sort;
 use RamElectronic\DataTableBundle\Application\ReadModel\TableCriteria;
+use RamElectronic\DataTableBundle\Application\ReadModel\TableDefinition;
 use RamElectronic\DataTableBundle\Presentation\Dto\FilterFormData;
 use RamElectronic\DataTableBundle\Presentation\Form\FilterType;
 use RamElectronic\DataTableBundle\Presentation\View\Table;
@@ -47,6 +48,48 @@ final readonly class TableHandler
         callable $finder,
         string $formType = FilterType::class,
     ): Table {
+        return $this->build($request, $fieldRegistry, $defaultSort, $finder, $formType, null);
+    }
+
+    /**
+     * Like handle(), with the filter fields and the default sort from a
+     * TableDefinition; the Table carries the definition, so
+     * <twig:DataTable:List :table="table" /> can render the whole list.
+     *
+     *     $table = $tableHandler->handleDefinition($request, $customerTable, $repository->findForTable(...));
+     *
+     * @template T
+     *
+     * @param callable(TableCriteria): PaginatedResult<T> $finder
+     * @param class-string<FilterType>                    $formType
+     *
+     * @return Table<T>
+     */
+    public function handleDefinition(
+        Request $request,
+        TableDefinition $definition,
+        callable $finder,
+        string $formType = FilterType::class,
+    ): Table {
+        return $this->build($request, $definition->filterFields(), $definition->defaultSort(), $finder, $formType, $definition);
+    }
+
+    /**
+     * @template T
+     *
+     * @param callable(TableCriteria): PaginatedResult<T> $finder
+     * @param class-string<FilterType>                    $formType
+     *
+     * @return Table<T>
+     */
+    private function build(
+        Request $request,
+        FilterFieldRegistry $fieldRegistry,
+        Sort $defaultSort,
+        callable $finder,
+        string $formType,
+        ?TableDefinition $definition,
+    ): Table {
         $form = $this->formFactory->create($formType, new FilterFormData(), ['field_registry' => $fieldRegistry]);
         $form->handleRequest($request);
 
@@ -77,6 +120,7 @@ final readonly class TableHandler
             fieldRegistry: $fieldRegistry,
             route: $route,
             routeParams: $routeParams,
+            definition: $definition,
         );
     }
 }

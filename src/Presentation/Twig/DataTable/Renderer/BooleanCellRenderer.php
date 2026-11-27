@@ -32,7 +32,7 @@ readonly class BooleanCellRenderer implements CellRendererInterface
             return '';
         }
 
-        return $this->translator->trans($value ? 'boolean.true' : 'boolean.false');
+        return htmlspecialchars($this->translator->trans($value ? 'boolean.true' : 'boolean.false', [], 'datatable'), \ENT_QUOTES, 'UTF-8');
     }
 
     #[\Override]

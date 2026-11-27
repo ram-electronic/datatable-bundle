@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace RamElectronic\DataTableBundle\Presentation\View;
 
+use RamElectronic\DataTableBundle\Application\ReadModel\Action;
 use RamElectronic\DataTableBundle\Application\ReadModel\FilterFieldRegistry;
 use RamElectronic\DataTableBundle\Application\ReadModel\PaginatedResult;
 use RamElectronic\DataTableBundle\Application\ReadModel\Sort;
+use RamElectronic\DataTableBundle\Application\ReadModel\TableColumn;
 use RamElectronic\DataTableBundle\Application\ReadModel\TableCriteria;
+use RamElectronic\DataTableBundle\Application\ReadModel\TableDefinition;
 use RamElectronic\DataTableBundle\Presentation\Dto\FilterFormData;
 use Symfony\Component\Form\FormView;
 
@@ -32,7 +35,27 @@ final readonly class Table
         public FilterFieldRegistry $fieldRegistry,
         public string $route,
         public array $routeParams = [],
+        /** Set by TableHandler::handleDefinition(); the DataTable component needs it. */
+        public ?TableDefinition $definition = null,
     ) {
+    }
+
+    /**
+     * The columns the DataTable component shows; empty without a definition.
+     *
+     * @return list<TableColumn>
+     */
+    public function getColumns(): array
+    {
+        return $this->definition?->columns() ?? [];
+    }
+
+    /**
+     * @return list<Action>
+     */
+    public function getActions(): array
+    {
+        return $this->definition?->actions() ?? [];
     }
 
     /**

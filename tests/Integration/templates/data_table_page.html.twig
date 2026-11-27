@@ -1,0 +1,5 @@
+<twig:DataTable:List :table="table" :rowAttributes="{'data-test': 'test-row'}">
+    <twig:block name="cell_status"><strong class="status">{{ row.status }}!</strong></twig:block>
+    <twig:block name="actions"><a href="/edit/{{ row.name }}">edit {{ row.name }}</a></twig:block>
+    <twig:block name="empty">Nobody here.</twig:block>
+</twig:DataTable:List>

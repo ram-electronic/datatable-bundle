@@ -9,6 +9,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `<twig:DataTable:List :table="table">` renders a whole list: filter form,
+  header with sort links, rows, actions, empty text and pagination. The page
+  passes blocks only for what generic rendering can't do: `cell_<key>` for a
+  column's cells and `actions` for the buttons (both see the current `row`),
+  `empty` for the text without rows. `rowAttributes` go onto every row.
+  The markup comes from the `DataTable:Table:*` components, so overriding
+  their templates restyles every list.
+- `TableDefinition` (columns, default sort, row actions) with
+  `TableColumn` (`sortable`, `filterable`), and
+  `TableHandler::handleDefinition($request, $definition, $finder)`, which
+  takes the filter fields and the default sort from it.
+  `TableDefinition::filterFields()` gives the repository its registry
+  (`FilterFields`, a registry for a list of columns).
+- `DefaultRenderer` shows `TranslatableInterface` values (e.g. an enum that
+  implements it) translated, other enums by value or name, and
+  `Stringable`s.
+- `DataTable:Table:SortableHeader` takes a `TranslatableMessage` as `label`;
+  `DataTable:Table:DataCell` has a `bold` prop.
+- `table.empty`, `boolean.true` and `boolean.false` in the `datatable`
+  domain.
+
+### Fixed
+
+- `DefaultRenderer` escapes the value. Before, a row value containing HTML
+  (a user-entered name) was printed raw by `DataTable:Table:DataCell` (XSS).
+- `BooleanCellRenderer` translates `boolean.true`/`boolean.false` in the
+  `datatable` domain (missed in 1.2.0) and escapes the result.
+
+## [1.3.0] - 2026-11-27
+
+### Added
+
 - `TableHandler::handle($request, $fieldRegistry, $defaultSort, $finder)`
   turns a list request into one `Presentation\View\Table` (current page,
   criteria, filter form view and data, field registry, route): it submits the

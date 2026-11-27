@@ -144,6 +144,69 @@ bundle's templates, e.g. in `assets/styles/app.css`:
    `Presentation\Service\TableCriteriaBuilder` and pass those props
    yourself, as before.
 
+## Rendering a whole list
+
+Instead of writing the table markup per page, describe the list once and let
+`DataTable:List` render it:
+
+```php
+final class CustomerTable extends TableDefinition
+{
+    public function columns(): array
+    {
+        return [
+            new TableColumn('name', DataType::STRING, new TranslatableMessage('label.name'), sortable: true, filterable: true),
+            new TableColumn('status', DataType::STRING, new TranslatableMessage('label.status')),
+            new TableColumn('createdAt', DataType::DATE, new TranslatableMessage('label.created_at'), sortable: true),
+        ];
+    }
+
+    public function defaultSort(): Sort
+    {
+        return new Sort('name', SortDirection::ASC);
+    }
+
+    public function actions(): array
+    {
+        return [Action::edit('customer_edit')];
+    }
+}
+```
+
+The repository takes its filter fields from the definition
+(`parent::__construct($customerTable->filterFields(), ...)`) and maps the
+filterable and sortable keys. The controller:
+
+```php
+return $this->render('customer/index.html.twig', [
+    'table' => $tableHandler->handleDefinition($request, $customerTable, $repository->findForTable(...)),
+]);
+```
+
+The page:
+
+```twig
+<twig:DataTable:List :table="table" :rowAttributes="{'data-test': 'customer-row'}">
+    {# optional, `row` is the current row #}
+    <twig:block name="cell_status"><span class="badge">{{ row.status|trans }}</span></twig:block>
+    <twig:block name="actions"><a href="{{ path('customer_edit', {id: row.id}) }}">Edit</a></twig:block>
+    <twig:block name="empty">No customers yet.</twig:block>
+</twig:DataTable:List>
+```
+
+A column without a `cell_<key>` block shows the row's property or getter
+named like the key through the cell renderer for its `DataType`
+(translated if the value implements `TranslatableInterface`, e.g. an enum).
+Without an `actions` block the definition's `actions()` are rendered. The
+filter form appears when the definition has filterable columns
+(`filter="false"` hides it).
+
+The list is built from `DataTable:Table`, `Table:Head`, `Table:HeadRow`,
+`Table:Header`, `Table:Body`, `Table:Row` and `Table:Cell`. To give every
+list your app's look, override those templates
+(`templates/bundles/DataTableBundle/components/Table/Row.html.twig`, ...),
+e.g. to render your own table components.
+
 ## Development
 
 The dev setup runs PHP, Composer and Xdebug in a container (`compose.yaml`),
