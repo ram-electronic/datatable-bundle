@@ -38,6 +38,37 @@ final class FilterFormRenderTest extends KernelTestCase
         self::assertStringContainsString('Add filter', $html);
     }
 
+    public function testSearchLabelIsOnlyForScreenReaders(): void
+    {
+        $html = $this->renderFilterForm();
+
+        self::assertMatchesRegularExpression('/<label[^>]*class="sr-only"[^>]*>Search<\/label>/', $html);
+        self::assertStringContainsString('placeholder="Search"', $html);
+    }
+
+    public function testAddFilterButtonIsTheSmallBundleButton(): void
+    {
+        $html = $this->renderFilterForm();
+
+        self::assertMatchesRegularExpression('/<button[^>]*class="[^"]*\bh-8\b[^"]*"[^>]*>\s*Add filter\s*<\/button>/', $html);
+        // LiveCollectionType's action attributes survive the custom block.
+        self::assertStringContainsString('data-live-action-param="addCollectionItem"', $html);
+        self::assertStringContainsString('type="button"', $html);
+    }
+
+    private function renderFilterForm(): string
+    {
+        $registry = new readonly class([
+            new Column('name', DataType::STRING, new TranslatableMessage('label.name')),
+        ]) extends FilterFieldRegistry {};
+
+        return $this->renderTwigComponent('FilterForm', [
+            'initialFormData' => new FilterFormData(),
+            'actionUrl' => '/list',
+            'fieldRegistry' => $registry,
+        ])->toString();
+    }
+
     /**
      * Without hydrateWith/dehydrateWith on FilterForm::$initialFormData this
      * failed with "Unable to dehydrate value of type array for property

@@ -3,9 +3,11 @@
         <div class="p-4">
             {{ form_start(form, {action: actionUrl}) }}
 
-            {# Quick Search Box #}
+            {# Quick search: the placeholder says what it is, the label stays for screen readers #}
             <div class="mb-4">
-                {{ form_row(form.search) }}
+                {{ form_label(form.search, null, {label_attr: {class: 'sr-only'}}) }}
+                {{ form_widget(form.search) }}
+                {{ form_errors(form.search) }}
             </div>
 
             {# Dynamic Filter Collection - LiveCollectionType handles add/remove #}
