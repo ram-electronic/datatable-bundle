@@ -46,6 +46,14 @@ final class FilterFormRenderTest extends KernelTestCase
         self::assertStringContainsString('placeholder="Search"', $html);
     }
 
+    public function testCardIsTheOnlyPaddingAroundTheForm(): void
+    {
+        $html = $this->renderFilterForm();
+
+        // The card brings p-4; a second padded wrapper inside it doubled the space.
+        self::assertSame(1, preg_match_all('/class="[^"]*\\bp-4\\b/', $html));
+    }
+
     public function testAddFilterButtonIsTheSmallBundleButton(): void
     {
         $html = $this->renderFilterForm();
