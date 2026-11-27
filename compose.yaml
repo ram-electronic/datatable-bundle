@@ -1,0 +1,35 @@
+# Development toolchain: PHP, Composer and Xdebug in a container, so the host
+# needs only Docker (and make). The bundle has no web server or database to
+# run; the tests boot a small kernel in-process (tests/Integration/Kernel.php).
+#
+# Use the Makefile (`make help`), or directly:
+#
+#   docker compose run --rm php composer install
+#   docker compose run --rm php vendor/bin/phpunit
+#
+# PHP_VERSION picks the PHP image (default 8.5, CI also tests 8.4); each
+# version gets its own image tag, so switching back and forth does not rebuild.
+services:
+  php:
+    image: datatable-bundle-php:${PHP_VERSION:-8.5}
+    build:
+      context: docker/php
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.5}
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - composer_cache:/home/dev/.cache/composer
+    environment:
+      # Off by default (it slows the tests down). XDEBUG_MODE=debug make test
+      # to step through, XDEBUG_MODE=coverage for coverage reports.
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+      # Lets an IDE map container paths to the checkout.
+      PHP_IDE_CONFIG: serverName=datatable-bundle
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  composer_cache:

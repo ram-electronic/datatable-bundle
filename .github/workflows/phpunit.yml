@@ -55,7 +55,6 @@ jobs:
           --with "symfony/validator:${{ matrix.symfony }}"
           --with "symfony/ux-live-component:${{ matrix.ux }}"
           --with "symfony/ux-twig-component:${{ matrix.ux }}"
-          --with "symfony/ux-icons:${{ matrix.ux }}"
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit

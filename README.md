@@ -144,7 +144,27 @@ bundle's templates, e.g. in `assets/styles/app.css`:
    `Presentation\Service\TableCriteriaBuilder` and pass those props
    yourself, as before.
 
-## Testing
+## Development
+
+The dev setup runs PHP, Composer and Xdebug in a container (`compose.yaml`),
+so you need only Docker and make:
+
+```bash
+make install   # build the image, resolve and install the dependencies
+make test      # run PHPUnit; make test ARGS="--filter FilterForm"
+make help      # all targets
+```
+
+`composer.lock` is not committed, so `make install` resolves the dependencies
+like CI does, for PHP 8.5, Symfony 8 and UX 3 by default. Pick other
+versions with `make install test PHP_VERSION=8.4 SYMFONY=7.4.* UX=^2.0`,
+or run both CI matrix entries with `make test-ci`.
+
+Xdebug is off by default. `XDEBUG_MODE=debug make test` connects to your
+IDE on port 9003 (path mapping: the checkout is `/app`, server name
+`datatable-bundle`); `XDEBUG_MODE=coverage` enables coverage reports.
+
+Without Docker, with PHP 8.4+ and Composer on the host:
 
 ```bash
 composer install
