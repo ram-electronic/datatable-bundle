@@ -7,10 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.2] - 2026-11-27
+
 ### Fixed
 
 - `DataTable:List` leaves a gap (`mb-4`) between the filter box and the
   table; before, the two touched.
+
+## [1.4.1] - 2026-11-27
+
+The same code as 1.4.0. On Packagist, 1.4.0 points at the 1.3.1 commit
+(the tag was moved after Packagist had read it), so require `^1.4.1` for
+`DataTable:List`.
 
 ## [1.4.0] - 2026-11-27
 
