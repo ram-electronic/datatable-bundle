@@ -2,11 +2,13 @@
     <div class="px-4 py-3 border-t border-border">
         <div class="flex items-center justify-between">
             <div class="text-sm text-muted-foreground">
-                {{ 'pagination.showing'|trans }} {{ (pagination.currentPage - 1) * pagination.pageSize + 1 }}
-                {{ 'pagination.to'|trans }} {{ min(pagination.currentPage * pagination.pageSize, pagination.totalCount) }}
-                {{ 'pagination.of'|trans }} {{ pagination.totalCount }} {{ 'pagination.results'|trans }}
+                {{ 'pagination.summary'|trans({
+                    '%from%': (pagination.currentPage - 1) * pagination.pageSize + 1,
+                    '%to%': min(pagination.currentPage * pagination.pageSize, pagination.totalCount),
+                    '%total%': pagination.totalCount,
+                }, 'datatable') }}
             </div>
-            <twig:DataTable:Pagination:Content role="navigation" aria-label="{{ 'pagination.aria.navigation'|trans }}">
+            <twig:DataTable:Pagination:Content role="navigation" aria-label="{{ 'pagination.aria.navigation'|trans({}, 'datatable') }}">
                 {% set currentParams = app.request.query.all %}
                 {% if filterFormName and filterFormName in currentParams|keys %}
                     {% set currentParams = currentParams|merge({(filterFormName): currentParams[filterFormName]|merge({page: pagination.currentPage})}) %}

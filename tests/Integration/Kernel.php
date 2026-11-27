@@ -11,7 +11,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\UX\Icons\UXIconsBundle;
 use Symfony\UX\LiveComponent\LiveComponentBundle;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 use Symfony\UX\TwigComponent\TwigComponentBundle;
@@ -31,7 +30,6 @@ final class Kernel extends BaseKernel
         yield new TwigComponentBundle();
         yield new StimulusBundle();
         yield new LiveComponentBundle();
-        yield new UXIconsBundle();
         yield new TwigExtraBundle();
         yield new TalesFromADevTwigExtraTailwindBundle();
         yield new DataTableBundle();
@@ -68,9 +66,9 @@ final class Kernel extends BaseKernel
 
             $container->loadFromExtension('twig_component', [
                 'anonymous_template_directory' => 'components',
-                'defaults' => [
-                    'RamElectronic\\DataTableBundle\\Presentation\\Twig\\Components\\' => '@DataTable/components/',
-                ],
+                // What a typical app configures; the bundle's components must
+                // work without an entry for its own namespace.
+                'defaults' => ['App\\Twig\\Components\\' => 'components/'],
             ]);
         });
     }

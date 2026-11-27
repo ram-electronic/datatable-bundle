@@ -21,6 +21,102 @@
         <source>pagination.aria.next</source>
         <target>Go to next page</target>
       </trans-unit>
+      <trans-unit id="action.apply_filters" resname="action.apply_filters">
+        <source>action.apply_filters</source>
+        <target>Apply filters</target>
+      </trans-unit>
+      <trans-unit id="action.clear_filters" resname="action.clear_filters">
+        <source>action.clear_filters</source>
+        <target>Clear filters</target>
+      </trans-unit>
+      <trans-unit id="action.add_filter" resname="action.add_filter">
+        <source>action.add_filter</source>
+        <target>Add filter</target>
+      </trans-unit>
+      <trans-unit id="action.remove_filter" resname="action.remove_filter">
+        <source>action.remove_filter</source>
+        <target>Remove</target>
+      </trans-unit>
+      <trans-unit id="label.search" resname="label.search">
+        <source>label.search</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="placeholder.search" resname="placeholder.search">
+        <source>placeholder.search</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="label.filter_condition" resname="label.filter_condition">
+        <source>label.filter_condition</source>
+        <target>Filter</target>
+      </trans-unit>
+      <trans-unit id="label.select_field" resname="label.select_field">
+        <source>label.select_field</source>
+        <target>Column</target>
+      </trans-unit>
+      <trans-unit id="label.select_operator" resname="label.select_operator">
+        <source>label.select_operator</source>
+        <target>Condition</target>
+      </trans-unit>
+      <trans-unit id="label.filter_value" resname="label.filter_value">
+        <source>label.filter_value</source>
+        <target>Value</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.equals" resname="filter.operator.equals">
+        <source>filter.operator.equals</source>
+        <target>is</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.not_equals" resname="filter.operator.not_equals">
+        <source>filter.operator.not_equals</source>
+        <target>is not</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.contains" resname="filter.operator.contains">
+        <source>filter.operator.contains</source>
+        <target>contains</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.not_contains" resname="filter.operator.not_contains">
+        <source>filter.operator.not_contains</source>
+        <target>does not contain</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.starts_with" resname="filter.operator.starts_with">
+        <source>filter.operator.starts_with</source>
+        <target>starts with</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.ends_with" resname="filter.operator.ends_with">
+        <source>filter.operator.ends_with</source>
+        <target>ends with</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.less_than" resname="filter.operator.less_than">
+        <source>filter.operator.less_than</source>
+        <target>less than</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.less_than_or_equal" resname="filter.operator.less_than_or_equal">
+        <source>filter.operator.less_than_or_equal</source>
+        <target>less than or equal to</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.greater_than" resname="filter.operator.greater_than">
+        <source>filter.operator.greater_than</source>
+        <target>greater than</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.greater_than_or_equal" resname="filter.operator.greater_than_or_equal">
+        <source>filter.operator.greater_than_or_equal</source>
+        <target>greater than or equal to</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.is_true" resname="filter.operator.is_true">
+        <source>filter.operator.is_true</source>
+        <target>is yes</target>
+      </trans-unit>
+      <trans-unit id="filter.operator.is_false" resname="filter.operator.is_false">
+        <source>filter.operator.is_false</source>
+        <target>is no</target>
+      </trans-unit>
+      <trans-unit id="pagination.summary" resname="pagination.summary">
+        <source>pagination.summary</source>
+        <target>Showing %from% to %to% of %total% results</target>
+      </trans-unit>
+      <trans-unit id="pagination.aria.navigation" resname="pagination.aria.navigation">
+        <source>pagination.aria.navigation</source>
+        <target>Pagination</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

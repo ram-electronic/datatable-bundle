@@ -83,6 +83,7 @@ class FilterType extends AbstractType
         $resolver->setDefaults([
             'method' => 'GET',
             'csrf_protection' => false,
+            'translation_domain' => 'datatable',
             'data_class' => FilterFormData::class,
             'field_registry' => null,
         ]);

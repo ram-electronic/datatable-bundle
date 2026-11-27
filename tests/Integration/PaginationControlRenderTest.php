@@ -26,5 +26,7 @@ final class PaginationControlRenderTest extends KernelTestCase
 
         self::assertStringContainsString('Previous', $html);
         self::assertStringContainsString('Next', $html);
+        self::assertStringContainsString('Showing 11 to 20 of 30 results', $html);
+        self::assertSame(2, substr_count($html, '<svg'), 'chevrons are inline SVGs, no ux-icons needed');
     }
 }
