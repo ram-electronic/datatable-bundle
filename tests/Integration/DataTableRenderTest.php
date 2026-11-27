@@ -52,6 +52,7 @@ final class DataTableRenderTest extends KernelTestCase
         // Definition actions, filter form and pagination.
         $this->assertStringContainsString('href="/list?id=', $html, 'edit action from the definition');
         $this->assertStringContainsString('data-live-name-value="FilterForm"', $html);
+        $this->assertMatchesRegularExpression('/<div[^>]*class="mb-4"[^>]*data-live-name-value="FilterForm"|<div[^>]*data-live-name-value="FilterForm"[^>]*class="mb-4"/', $html, 'gap between filter box and table');
         $this->assertStringContainsString('Showing 1 to 10 of 25 results', $html);
     }
 

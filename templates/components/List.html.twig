@@ -26,7 +26,7 @@
 
 <div {{ attributes }}>
     {% if filter and table.fieldRegistry.keys is not empty %}
-        <twig:FilterForm :table="table" />
+        <twig:FilterForm :table="table" class="mb-4" />
     {% endif %}
 
     <twig:DataTable:Table>
