@@ -14,6 +14,7 @@ final class DataCell
 {
     public mixed $row;
     public Column $column;
+    public bool $bold = false;
 
     public function __construct(private readonly TableCellRenderer $renderer)
     {

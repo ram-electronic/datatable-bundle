@@ -1,0 +1,76 @@
+{# @prop table Table built by TableHandler::handleDefinition() #}
+{# @prop filter bool Show the filter form, default true #}
+{# @prop rowAttributes array Attributes for every row #}
+{#
+    The page's blocks (cell_<key>, actions, empty) are rendered here, at the
+    top level of this template: block() inside the content of a nested
+    component would look for them in that component instead.
+#}
+{%- set columns = table.columns -%}
+{%- set has_actions = block('actions') is defined or table.actions is not empty -%}
+{%- set rows = [] -%}
+{%- for row in table.items -%}
+    {%- set cells = {} -%}
+    {%- for column in columns -%}
+        {%- if block('cell_' ~ column.key) is defined -%}
+            {%- set cells = cells|merge({(column.key): block('cell_' ~ column.key)}) -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set rows = rows|merge([{
+        row: row,
+        cells: cells,
+        actions: block('actions') is defined ? block('actions') : null,
+    }]) -%}
+{%- endfor -%}
+{%- set empty_html = block('empty') is defined ? block('empty') : ('table.empty'|trans({}, 'datatable'))|e -%}
+
+<div {{ attributes }}>
+    {% if filter and table.fieldRegistry.keys is not empty %}
+        <twig:FilterForm :table="table" />
+    {% endif %}
+
+    <twig:DataTable:Table>
+        <twig:DataTable:Table:Head>
+            <twig:DataTable:Table:HeadRow>
+                {% for column in columns %}
+                    <twig:DataTable:Table:Header>
+                        {% if column.sortable %}
+                            <twig:DataTable:Table:SortableHeader :table="table" sortKey="{{ column.key }}" :label="column.label" />
+                        {% else %}
+                            {{ column.label|trans }}
+                        {% endif %}
+                    </twig:DataTable:Table:Header>
+                {% endfor %}
+                {% if has_actions %}
+                    <twig:DataTable:Table:Header align="right" />
+                {% endif %}
+            </twig:DataTable:Table:HeadRow>
+        </twig:DataTable:Table:Head>
+        <twig:DataTable:Table:Body>
+            {% for entry in rows %}
+                <twig:DataTable:Table:Row data-datatable-row {{ ...rowAttributes }}>
+                    {% for column in columns %}
+                        {% if entry.cells[column.key] is defined %}
+                            <twig:DataTable:Table:Cell :bold="loop.first">{{ entry.cells[column.key]|raw }}</twig:DataTable:Table:Cell>
+                        {% else %}
+                            <twig:DataTable:Table:DataCell :column="column" :row="entry.row" :bold="loop.first" />
+                        {% endif %}
+                    {% endfor %}
+                    {% if has_actions %}
+                        {% if entry.actions is not null %}
+                            <twig:DataTable:Table:Cell align="right">{{ entry.actions|raw }}</twig:DataTable:Table:Cell>
+                        {% else %}
+                            <twig:DataTable:Table:ActionsCell :actions="table.actions" :row="entry.row" />
+                        {% endif %}
+                    {% endif %}
+                </twig:DataTable:Table:Row>
+            {% else %}
+                <twig:DataTable:Table:Row>
+                    <twig:DataTable:Table:Cell colspan="{{ columns|length + (has_actions ? 1 : 0) }}">{{ empty_html|raw }}</twig:DataTable:Table:Cell>
+                </twig:DataTable:Table:Row>
+            {% endfor %}
+        </twig:DataTable:Table:Body>
+    </twig:DataTable:Table>
+
+    <twig:PaginationControl :table="table" />
+</div>

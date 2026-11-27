@@ -2,6 +2,6 @@
 {# @prop row mixed The data source to render #}
 
 {% set cellValue = this.htmlValue() %}
-<twig:DataTable:Table:Cell>
+<twig:DataTable:Table:Cell :bold="bold">
     {{ cellValue }}
 </twig:DataTable:Table:Cell>
