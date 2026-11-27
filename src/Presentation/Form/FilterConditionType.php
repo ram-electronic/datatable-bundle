@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * Reusable form type for a single filter condition.
@@ -36,7 +37,9 @@ class FilterConditionType extends AbstractType
             ->add('field', ChoiceType::class, [
                 'label' => 'label.select_field',
                 'required' => false,
-                'choices' => $registry->getFieldChoices(),
+                // Column labels are the app's own TranslatableMessages, in the app's domain.
+                'choices' => $registry->getKeys(),
+                'choice_label' => static fn (string $key): TranslatableMessage|string => $registry->getField($key)?->label ?? $key,
                 'placeholder' => 'label.select_field',
             ])
             ->add('operator', EnumType::class, [
@@ -69,6 +72,7 @@ class FilterConditionType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => 'label.filter_condition',
+            'translation_domain' => 'datatable',
             'field_registry' => null,
             'data_class' => FilterConditionFormData::class,
         ]);

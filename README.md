@@ -9,8 +9,7 @@ Symfony UX Live Components.
 - PHP 8.4+
 - Symfony 7.0+ (`framework-bundle`, `form`, `routing`, `security-csrf`,
   `translation`, `validator`, `twig-bundle`)
-- Symfony UX `live-component`, `twig-component` 2.0+, and `ux-icons` (for the
-  default pagination chevrons)
+- Symfony UX `live-component` and `twig-component` 2.0+
 - Doctrine `orm` 3.0+ and `doctrine-bundle` 2.11+
 - Twig 3.0+, `twig/extra-bundle` and `twig/html-extra` (for the default
   `Button:*` components' variant styling), and `tales-from-a-dev/twig-tailwind-extra`
@@ -31,16 +30,16 @@ return [
     // ...
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     TalesFromADev\Twig\Extra\Tailwind\Bridge\Symfony\Bundle\TalesFromADevTwigExtraTailwindBundle::class => ['all' => true],
-    Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
     RamElectronic\DataTableBundle\DataTableBundle::class => ['all' => true],
 ];
 ```
 
 ## Twig components
 
-The bundle auto-registers every component under the
-`RamElectronic\DataTableBundle\Presentation\Twig\Components` namespace — there
-is nothing else to install or implement, `FilterForm`, `FilterCondition`, and
+The bundle registers every component with an explicit name and template, so
+your app needs no `twig_component.defaults` entry for the bundle's namespace,
+and it adds its filter form theme (`@DataTable/form/filter_theme.html.twig`)
+to `twig.form_themes` itself. `FilterForm`, `FilterCondition`, and
 `PaginationControl` render out of the box:
 
 - `FilterForm` / `FilterCondition` — Live Components backing the filter UI
@@ -74,15 +73,34 @@ drop a file at `templates/bundles/DataTableBundle/<relative-path>` in your app
 Symfony will render your version instead of the bundle's default for that one
 component, leaving the rest of the bundle's defaults untouched.
 
-Pagination labels (`Previous`/`Next` and their `aria-label`s) live in the
-bundle's own `datatable` translation domain (`translations/datatable.*.xlf`,
-shipped in English and German) rather than your app's `messages` domain, so
-they work without any translation keys of your own.
+### Translations
+
+All texts of the bundle (filter form, operators, pagination) live in its own
+`datatable` translation domain (`translations/datatable.*.xlf`, shipped in
+English and German), not in your app's `messages` domain, so they work without
+any translation keys of your own and can't clash with them. To change a text,
+override the key in your app's `translations/datatable.<locale>.xlf`.
+
+Column labels are yours: the `TranslatableMessage` of each `Column` and the
+`label` of `DataTable:Table:SortableHeader` are translated in your app's
+domain.
+
+### Tailwind CSS
+
+The default components use Tailwind classes. With Tailwind 4, let it scan the
+bundle's templates, e.g. in `assets/styles/app.css`:
+
+```css
+@source "../../vendor/ram-electronic/datatable-bundle/templates";
+```
 
 ## Usage
 
 1. Define your filterable columns with an `Application\ReadModel\FilterFieldRegistry`
-   subclass built from `Column` definitions.
+   subclass built from `Column` definitions. `FilterForm` rebuilds the
+   registry as `new YourRegistry($fields)`, so a subclass that defines its
+   columns itself takes them as an optional argument:
+   `public function __construct(?array $fields = null) { parent::__construct($fields ?? [new Column(...), ...]); }`
 2. Extend `Infrastructure\Repository\DoctrineTableReadModelRepository` for your
    read-model entity's repository — it provides filtering, sorting, and
    pagination against a Doctrine `QueryBuilder` given a field-to-column mapping.

@@ -7,7 +7,7 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\Components;
 use RamElectronic\DataTableBundle\Application\ReadModel\PaginatedResult;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent]
+#[AsTwigComponent('PaginationControl', template: '@DataTable/components/PaginationControl.html.twig')]
 final class PaginationControl
 {
     /** @var PaginatedResult<object> */

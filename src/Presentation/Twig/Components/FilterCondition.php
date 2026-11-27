@@ -16,7 +16,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
  * Updates available operators based on selected field type.
  * Field definitions are passed via props for reusability.
  */
-#[AsLiveComponent]
+#[AsLiveComponent('FilterCondition', template: '@DataTable/components/FilterCondition.html.twig')]
 final class FilterCondition
 {
     use DefaultActionTrait;

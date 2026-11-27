@@ -5,6 +5,6 @@
     class="{{ ('gap-1 pl-2.5 ' ~ attributes.render('class'))|tailwind_merge }}"
     {{ ...attributes.without('class') }}
 >
-    <twig:ux:icon name="lucide:chevron-left" class="size-4" />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 18l-6-6l6-6"/></svg>
     <span>{{ 'pagination.previous'|trans({}, 'datatable') }}</span>
 </twig:DataTable:Button:Link>

@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Found while adding the bundle to a fresh Symfony 8.1 / UX 3 app: it needed
+four workarounds there, which are no longer necessary.
+
+### Changed
+
+- All texts are in the bundle's `datatable` translation domain, with English
+  and German translations: the filter form (`action.apply_filters`,
+  `action.clear_filters`, `action.add_filter`, `action.remove_filter`,
+  `label.search`, `placeholder.search`, `label.filter_condition`,
+  `label.select_field`, `label.select_operator`, `label.filter_value`), the
+  operators (`filter.operator.*`) and the pagination. Before, all but the
+  previous/next labels were looked up in the app's `messages` domain, so every
+  app had to define them and they could clash with the app's own keys. Apps
+  that defined these keys in `messages` can delete them; to change a text,
+  override it in `translations/datatable.<locale>.xlf`. Column labels stay in
+  the app's domain (`FilterType` and `FilterConditionType` default to
+  `translation_domain: datatable`; the field choices use the columns'
+  `TranslatableMessage`s).
+- The pagination summary is one message, `pagination.summary` with
+  `%from%`, `%to%` and `%total%`, instead of `pagination.showing`,
+  `pagination.to`, `pagination.of` and `pagination.results`.
+- The pagination chevrons are inline SVGs; `symfony/ux-icons` is no longer a
+  dependency. Before, apps had to register `UXIconsBundle` by hand (Flex
+  doesn't for a transitive dependency) and the icons were fetched from
+  Iconify at runtime, because the bundle's `assets/icons/` weren't on the
+  app's icon path.
+
+### Fixed
+
+- `FilterForm`, `FilterCondition` and `PaginationControl` have explicit names
+  and `@DataTable` templates. Before, an app needed a
+  `twig_component.defaults` entry for the bundle's namespace, or
+  `cache:clear` failed with "Could not generate a component name".
+- The bundle adds its filter form theme to `twig.form_themes` itself.
+- `FilterForm` (de)hydrates `initialFormData` itself. Before, rendering it
+  with at least one filter condition failed with "Unable to dehydrate value of
+  type array for property filters" unless the app had
+  `phpstan/phpdoc-parser` and `phpdocumentor/type-resolver` installed.
+
+## [1.1.1] - 2026-11-26
+
 ### Fixed
 
 - The `Table:*` sub-components (`Body`, `Cell`, `Head`, `Header`, `Row`,

@@ -19,7 +19,7 @@
             data-model="selectedField"
             class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
         >
-            <option value="">{{ 'label.select_field'|trans }}</option>
+            <option value="">{{ 'label.select_field'|trans({}, 'datatable') }}</option>
             {% for field in this.getFieldChoices() %}
                 <option value="{{ field.key }}"{{ selectedField == field.key ? ' selected' : '' }}>{{ field.label|trans }}</option>
             {% endfor %}
@@ -34,9 +34,9 @@
             {{ selectedField == '' ? 'disabled' : '' }}
             class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
         >
-            <option value="">{{ 'label.select_operator'|trans }}</option>
+            <option value="">{{ 'label.select_operator'|trans({}, 'datatable') }}</option>
             {% for operator in this.getAvailableOperators() %}
-                <option value="{{ operator.value }}"{{ selectedOperator == operator.value ? ' selected' : '' }}>{{ operator.label|trans }}</option>
+                <option value="{{ operator.value }}"{{ selectedOperator == operator.value ? ' selected' : '' }}>{{ operator.label|trans({}, 'datatable') }}</option>
             {% endfor %}
         </select>
     </div>
@@ -47,7 +47,7 @@
             type="text"
             name="{{ this.getFieldInputName('value') }}"
             value="{{ value }}"
-            placeholder="{{ 'label.filter_value'|trans }}"
+            placeholder="{{ 'label.filter_value'|trans({}, 'datatable') }}"
             data_model="value"
             :disabled="(selectedField == '' or selectedOperator == '')"
         />
