@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `DataTable:List` leaves a gap (`mb-4`) between the filter box and the
+  table; before, the two touched.
+
 ## [1.4.0] - 2026-11-27
 
 ### Added
