@@ -30,8 +30,7 @@ install: build ## Resolve and install the dependencies for PHP_VERSION, SYMFONY 
 		--with "symfony/form:$(SYMFONY)" \
 		--with "symfony/validator:$(SYMFONY)" \
 		--with "symfony/ux-live-component:$(UX)" \
-		--with "symfony/ux-twig-component:$(UX)" \
-		--with "symfony/ux-icons:$(UX)"
+		--with "symfony/ux-twig-component:$(UX)"
 .PHONY: install
 
 test: ## Run PHPUnit: make test ARGS="--filter FilterForm"
