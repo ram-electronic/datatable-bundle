@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   accept `table`, which fills their other props; explicitly passed props still
   win. A page passes one variable instead of five.
 
+### Changed
+
+- The filter form takes less room: the search field's label is visually
+  hidden (still read by screen readers), the placeholder names the field.
+  The "add filter" button is the bundle's small outline `Button`, rendered by
+  the bundle's filter theme (block `datatable_filter_add_widget`) instead of
+  the app's `live_collection_button_add_widget`.
+
 ## [1.2.0] - 2026-11-27
 
 Found while adding the bundle to a fresh Symfony 8.1 / UX 3 app: it needed

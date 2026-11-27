@@ -39,3 +39,15 @@
         {% endif %}
     </div>
 {% endblock %}
+
+{#
+    The filter form's "add filter" button (FilterType gives it the block prefix
+    "datatable_filter_add"). Rendered with the bundle's own Button component in the small size,
+    so it looks the same in every app instead of taking the app's full-size button styling. The
+    attributes LiveCollectionType sets (data-action etc.) are passed through.
+#}
+{% block datatable_filter_add_widget %}
+    <twig:DataTable:Button:Button variant="outline" size="sm" class="mt-2" id="{{ id }}" name="{{ full_name }}" {{ ...attr }}>
+        {{- label|trans(label_translation_parameters, translation_domain) -}}
+    </twig:DataTable:Button:Button>
+{% endblock %}

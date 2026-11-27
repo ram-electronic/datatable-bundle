@@ -69,6 +69,9 @@ class FilterType extends AbstractType
                 'label' => false,
                 'button_add_options' => [
                     'label' => 'action.add_filter',
+                    // Rendered by the datatable_filter_add_widget block in
+                    // the bundle's filter theme, not the app's button theme.
+                    'block_prefix' => 'datatable_filter_add',
                 ],
                 'button_delete_options' => [
                     'label' => 'action.remove_filter',
