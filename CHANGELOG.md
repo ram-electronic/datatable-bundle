@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.3] - 2026-11-27
+
 ### Changed
 
 - The filter form is padded once, by its card (`p-4`). Before, a second
