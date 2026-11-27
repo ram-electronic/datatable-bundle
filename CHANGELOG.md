@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-27
+
 ### Added
 
 - `<twig:DataTable:List :table="table">` renders a whole list: filter form,
@@ -37,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `BooleanCellRenderer` translates `boolean.true`/`boolean.false` in the
   `datatable` domain (missed in 1.2.0) and escapes the result.
 
+## [1.3.1] - 2026-11-27
+
+### Changed
+
+- The filter form takes less room: the search field's label is visually
+  hidden (still read by screen readers), the placeholder names the field.
+  The "add filter" button is the bundle's small outline `Button`, rendered by
+  the bundle's filter theme (block `datatable_filter_add_widget`) instead of
+  the app's `live_collection_button_add_widget`.
+
 ## [1.3.0] - 2026-11-27
 
 ### Added
@@ -49,14 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `FilterForm`, `DataTable:Table:SortableHeader` and `PaginationControl`
   accept `table`, which fills their other props; explicitly passed props still
   win. A page passes one variable instead of five.
-
-### Changed
-
-- The filter form takes less room: the search field's label is visually
-  hidden (still read by screen readers), the placeholder names the field.
-  The "add filter" button is the bundle's small outline `Button`, rendered by
-  the bundle's filter theme (block `datatable_filter_add_widget`) instead of
-  the app's `live_collection_button_add_widget`.
 
 ## [1.2.0] - 2026-11-27
 
