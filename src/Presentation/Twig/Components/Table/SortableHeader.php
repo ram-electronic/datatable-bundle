@@ -6,6 +6,7 @@ namespace RamElectronic\DataTableBundle\Presentation\Twig\Components\Table;
 
 use RamElectronic\DataTableBundle\Application\ReadModel\Sort;
 use RamElectronic\DataTableBundle\Application\ReadModel\SortDirection;
+use RamElectronic\DataTableBundle\Presentation\View\Table;
 use Symfony\Component\Form\FormView;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
@@ -25,6 +26,22 @@ final class SortableHeader
 
     /** @var array<string, mixed> */
     public array $routeParams = [];
+
+    /**
+     * Fills currentSort, route, routeParams and form from a Table, so a page
+     * only passes `:table="table"` besides sortKey and label.
+     *
+     * @param Table<mixed>|null $table
+     */
+    public function mount(?Table $table = null): void
+    {
+        if ($table instanceof Table) {
+            $this->currentSort = $table->getSort();
+            $this->route = $table->route;
+            $this->routeParams = $table->routeParams;
+            $this->form = $table->form;
+        }
+    }
 
     /**
      * Get the next sort direction (toggle between ASC and DESC).

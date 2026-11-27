@@ -10,6 +10,7 @@ use RamElectronic\DataTableBundle\Application\ReadModel\SortDirection;
 use RamElectronic\DataTableBundle\Presentation\Dto\FilterConditionFormData;
 use RamElectronic\DataTableBundle\Presentation\Dto\FilterFormData;
 use RamElectronic\DataTableBundle\Presentation\Form\FilterType;
+use RamElectronic\DataTableBundle\Presentation\View\Table;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -53,6 +54,21 @@ class FilterForm extends AbstractController
     public function __construct()
     {
         $this->initialFormData = new FilterFormData();
+    }
+
+    /**
+     * Fills initialFormData, fieldRegistry and actionUrl from a Table on the
+     * first render, so a page only passes `:table="table"`.
+     *
+     * @param Table<mixed>|null $table
+     */
+    public function mount(?Table $table = null): void
+    {
+        if ($table instanceof Table) {
+            $this->initialFormData = $table->formData;
+            $this->fieldRegistry = $table->fieldRegistry;
+            $this->actionUrl = $this->generateUrl($table->route, $table->routeParams);
+        }
     }
 
     /**
