@@ -1,6 +1,11 @@
 # DataTable Bundle
 
-![AI:W](https://img.shields.io/badge/AI-W-d29922 "AI:W AI collaboration, AI wrote, a human read and fixed all of it")
+<a href="https://0rwx.com" title="AI:W AI collaboration, AI wrote, a human read and fixed all of it">
+  <picture>
+    <source srcset="https://raw.githubusercontent.com/NamtaoProductions/0rwx.com/main/static/AI-W-dark.svg" media="(prefers-color-scheme: dark)">
+    <img src="https://raw.githubusercontent.com/NamtaoProductions/0rwx.com/main/static/AI-W-light.svg" alt="AI:W" height="32">
+  </picture>
+</a>
 
 Reusable DataTable and Pagination bundle for Symfony applications: filterable,
 sortable, paginated table views built on Doctrine ORM, Symfony Forms, and
